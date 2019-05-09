@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 import os
 import requests
 import json
+from chatbot_inference import decode_sequence
 
 app = Flask(__name__)
 chabot_convo = []
@@ -23,7 +24,7 @@ def chatbot_interact():
         else:
             sent = request.form['sentence']
             chabot_convo.append('YOU: ' + sent)
-            reply = 'static reply'
+            reply = decode_sequence(sent)
             chabot_convo.append('BOT: ' + reply)
     return render_template('chatbot_interact.html', conversations=chabot_convo)
 
@@ -52,6 +53,7 @@ def chatbot_reply():
         'level': level
     })
 '''
+
 
 
 # run Flask app
